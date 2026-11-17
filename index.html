@@ -1,0 +1,364 @@
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><title>AI úprava videa – testy</title><style>
+:root{--bg:#ffffff;--fg:#1f2328;--mut:#59636e;--bd:#d1d9e0;--bd2:#e8ecf0;--sub:#f6f8fa;--acc:#0969da;--code:#eff2f5;
+--g:#1a7f37;--gb:#dafbe1;--b:#0969da;--bb:#ddf4ff;--y:#9a6700;--yb:#fff8c5;--r:#cf222e;--rb:#ffebe9;--n:#59636e;--nb:#eff2f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1117;--fg:#e6edf3;--mut:#9198a1;--bd:#3d444d;--bd2:#262c34;--sub:#151b23;--acc:#4493f8;--code:#262c34;
+--g:#3fb950;--gb:#12261e;--b:#4493f8;--bb:#121d2f;--y:#d29922;--yb:#272115;--r:#f85149;--rb:#2d1517;--n:#9198a1;--nb:#262c34}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.top{border-bottom:1px solid var(--bd);background:var(--sub);padding:14px 16px}
+.top .in{max-width:1280px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:15px}
+.top .repo{font-size:18px}.top .repo b{font-weight:600}.pill{border:1px solid var(--bd);border-radius:2em;padding:0 9px;font-size:12px;color:var(--mut)}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px}
+@media (max-width:1000px){.wrap{grid-template-columns:1fr}.toc{display:none}}
+.readme{border:1px solid var(--bd);border-radius:6px;min-width:0}
+.readme>.hd{border-bottom:1px solid var(--bd);padding:10px 16px;font-size:14px;font-weight:600;background:var(--sub);border-radius:6px 6px 0 0}
+.md{padding:16px 32px 32px}@media (max-width:640px){.md{padding:12px 16px 24px}}
+h1,h2,h3{line-height:1.25;font-weight:600;scroll-margin-top:16px}
+h1{font-size:2em;padding-bottom:.3em;border-bottom:1px solid var(--bd2);margin:.4em 0 .6em}
+h2{font-size:1.5em;padding-bottom:.3em;border-bottom:1px solid var(--bd2);margin:1.8em 0 .8em}
+h3{font-size:1.2em;margin:1.5em 0 .6em}
+p,ul,ol,table,blockquote,.note{margin:0 0 16px}ul,ol{padding-left:2em}li+li{margin-top:.25em}
+code,.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:85%}
+code{background:var(--code);padding:.2em .4em;border-radius:6px}
+.mono{color:var(--mut)}
+.tw{overflow-x:auto;margin:0 0 16px;border:1px solid var(--bd);border-radius:6px}
+table{border-collapse:collapse;width:100%;margin:0;font-size:14px}
+th,td{border-bottom:1px solid var(--bd2);padding:7px 12px;text-align:left;vertical-align:top}
+th{background:var(--sub);font-weight:600;white-space:nowrap}tr:last-child td{border-bottom:0}td.r,th.r{text-align:right;white-space:nowrap}
+.note{border-left:.25em solid var(--b);padding:8px 16px;background:var(--bb);border-radius:0 6px 6px 0}
+.note.warn{border-color:var(--y);background:var(--yb)}.note.tip{border-color:var(--g);background:var(--gb)}.note.bad{border-color:var(--r);background:var(--rb)}
+.note>b:first-child{display:block;margin-bottom:2px}
+.lab{display:inline-block;font-size:12px;font-weight:600;border-radius:2em;padding:0 8px;line-height:20px;border:1px solid transparent;white-space:nowrap}
+.lab.g{color:var(--g);background:var(--gb);border-color:var(--g)}.lab.b{color:var(--b);background:var(--bb);border-color:var(--b)}
+.lab.y{color:var(--y);background:var(--yb);border-color:var(--y)}.lab.r{color:var(--r);background:var(--rb);border-color:var(--r)}.lab.n{color:var(--n);background:var(--nb);border-color:var(--bd)}
+video,img{display:block;max-width:100%;background:#000;border-radius:6px}
+.fig{margin:0 0 16px}.fig figcaption{font-size:13px;color:var(--mut);margin-top:6px}
+.grid{display:grid;gap:16px;align-items:start;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));margin-bottom:16px}
+.card{border:1px solid var(--bd);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;background:var(--bg)}
+.card video{border-radius:0;width:100%}.card.land video{aspect-ratio:16/9}.card.port video{aspect-ratio:9/16;max-height:520px;margin:0 auto;width:auto;height:520px}
+@media (max-width:640px){.card.port video{height:auto;width:100%;max-height:none}}
+.cb{padding:10px 12px 4px;font-size:14px}.ch{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}.num{color:var(--mut);font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0;font-size:13px;color:var(--mut)}.stats b{color:var(--fg)}
+.cb p{margin:6px 0 8px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 16px}
+.kpi div{border:1px solid var(--bd);border-radius:6px;padding:10px 12px}.kpi b{display:block;font-size:22px;line-height:1.2}.kpi span{font-size:13px;color:var(--mut)}
+.steps{counter-reset:s;list-style:none;padding:0}.steps>li{counter-increment:s;position:relative;padding-left:40px;margin-top:10px}
+.steps>li:before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--sub);border:1px solid var(--bd);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.toc{position:sticky;top:16px;align-self:start;font-size:14px}.toc b{display:block;margin-bottom:8px}.toc a{display:block;padding:3px 0 3px 10px;color:var(--mut);border-left:2px solid var(--bd2)}.toc a:hover{color:var(--fg);border-color:var(--acc);text-decoration:none}
+.toc a.s{padding-left:22px;font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:760px){.two{grid-template-columns:1fr}}
+.foot{color:var(--mut);font-size:13px;border-top:1px solid var(--bd2);padding-top:16px;margin-top:32px}
+</style></head><body>
+<div class="top"><div class="in"><span class="repo">frantisekdron / <b>ai-uprava-videa</b></span><span class="pill">Interní</span><span class="pill">noindex</span>
+<span style="margin-left:auto;color:var(--mut);font-size:13px">18. 11. 2026 · FD Studio</span></div></div>
+<div class="wrap"><main class="readme"><div class="hd">README.md</div><div class="md">
+
+<h1>AI úprava hotového videa: Higgsfield Miracle, nové modely a naše workflow</h1>
+<p>Testy na skutečné scéně z Vanguardu: <b>Honza prochází prázdný loft a prostor se za ním mění</b> na luxusní interiér. Na šířku i na výšku, 720p, každý model se stejným zadáním a stejnou referencí. Všechno měřené: podoba Honzy, jestli drží dráhu, skutečně odečtené kredity.</p>
+<div class="kpi">
+<div><b>242,04 kr</b><span>utraceno z 250 povolených</span></div>
+<div><b>13</b><span>nových testů + 2 srovnání z 13. 11.</span></div>
+<div><b>9</b><span>modelů a režimů pro úpravu videa</span></div>
+<div><b>0 kr</b><span>Miracle – v MCP zatím není</span></div>
+</div>
+
+<h2 id="verdikt">Verdikt v šesti bodech</h2>
+<ol>
+<li><b>Miracle zatím použít nejde.</b> V Higgsfield MCP 18. 11. není – hledání modelů ani aplikací ho nenajde. Podle ukázky je v uzavřené betě pro vybrané testery a „brzy přes MCP“. Nic jsme za něj neplatili; až se objeví, je níž hotový <a href="#miracle-plan">plán prvních testů</a>.</li>
+<li><b>Na proměnu prostoru za člověkem vyhrál Kling 4.0 video-edit</b> (<a href="#t7">#07</a>, <a href="#t8">#08</a>). Udělá ji sám v jedné generaci, na šířku i na výšku, drží Honzovu dráhu i časování (odchylka 0,3 % šířky obrazu) a v 720p stojí <b>16,5 kr za 6 s</b> (2,75 kr/s).</li>
+<li><b>Když jde hlavně o tvář, dál platí Genjutsu (plné)</b> (<a href="#t10">#10</a>): podoba 0,80 – nejvíc ze všech testů. Jenže 49 kr v 720p a 140 kr v 1080p a proměnu v čase neumí.</li>
+<li><b>Nejbližší náhrada Miraclu pro úpravu hotového AI klipu je FLUX 3 Video Edit</b> (<a href="#t12">#12</a>): přepne den na modrou hodinu s rozsvícenými lustry a zbytek nechá. Účtuje 1 kr za sekundu, tedy ~6 kr za klip. „RAW“ vzhled zvládl jen napůl (<a href="#t13">#13</a>).</li>
+<li><b>Gemini Omni Flash 1.2</b> je levná zkouška stylu (15,75 kr) se stabilní tváří, ale Honzu posouvá – pod výsledek nejde vrátit originál.</li>
+<li><b>Nepoužívat:</b> Kling 4.0 Flash (dražší než plný Kling 4.0 a horší), Genjutsu Lite (vyměnil Honzu za jiného člověka a zastavil kameru), Seedance 2.5 Flash na úpravu videa (39 kr bez výhody).</li>
+</ol>
+
+<h2 id="miracle">Co je Higgsfield Miracle</h2>
+<p>Higgsfield ho představil 17. 11. reklamním videem (v Učebně zdroj <code>ig-Df26HDYCs62</code>). Vlastními slovy, co ukazuje:</p>
+<div class="tw"><table>
+<tr><th>Funkce v ukázce</th><th>Co to znamená</th></tr>
+<tr><td>Rozklad na vrstvy</td><td>Hotové AI video, kde je všechno „zapečené“ do jednoho obrazu, rozloží na samostatně upravitelné vrstvy (postava, pozadí, světlo, prvky) s přesností na pixel.</td></tr>
+<tr><td>Úprava jedné vrstvy v reálném čase</td><td>Slovy řekneš, co změnit, a nástroj si k tomu vytvoří ovladač: velikost prvku („zvětši hlavu“), rychlost pozadí, měkkost a směr světla.</td></tr>
+<tr><td>Kontrola změn</td><td>Náhled, kde přesně úprava proběhla a co zůstalo netknuté.</td></tr>
+<tr><td>Znalost reálného světa</td><td>Úprava podle aktuálního kontextu: oblečení podle dnešního počasí v New Yorku, billboard s dnešním programem.</td></tr>
+<tr><td>RAW a vlastní grade</td><td>„Neupravený, RAW vzhled“ a pak vlastní barvení – AI klip přestane mít napevno daný look.</td></tr>
+</table></div>
+<div class="note warn"><b>Stav k 18. 11. 2026</b>Uzavřená beta, „brzy na Higgsfieldu přes MCP“, cena neznámá. Ověřeno v MCP účtu honza@: <code>models_explore search "miracle"</code> → prázdné, <code>apps_search "miracle"</code> → prázdné. Všechno v tabulce je z reklamy, ne z vlastního testu.</div>
+
+<h3 id="miracle-plan">Kde ho použijeme, až bude</h3>
+<div class="tw"><table>
+<tr><th>Funkce Miraclu</th><th>Náš dnešní problém</th><th>Příklad</th></tr>
+<tr><td>Oprava jednoho prvku</td><td>Kvůli jedné vadě se přegenerovává celý klip a rozbije se to, co už bylo schválené.</td><td>Test <a href="#t11">#11</a>: gauč v cestě – posunout jen gauč. Vizualizace: špatné okno, cedule, ruka.</td></tr>
+<tr><td>Směr a měkkost světla</td><td>AI klip stříhaný mezi natočené záběry má slunce z jiné strany.</td><td>S2 loft: srovnat směr slunce se záběrem před a po.</td></tr>
+<tr><td>RAW + vlastní grade</td><td>AI klipy přicházejí teplé a „hotové“, Franta je pak barví proti jejich vůli.</td><td>Všechny AI vrstvy (V1–V5) barvit stejným gradem jako natočené – pravidlo „jen Frantovy nabarvené klipy“ zůstává.</td></tr>
+<tr><td>Velikost a rychlost prvku</td><td>Ladění pohybu = nová generace.</td><td>Zpomalit pozadí v AI dronovém klipu, zvětšit dům v hooku.</td></tr>
+<tr><td>Kontrola změn</td><td>Dnes ručně skillem <code>kontrola-pred-klientem</code> (dlaždice v plném rozlišení).</td><td>Automatický důkaz, že AI nezměnila stavbu (okna, dveře, zdi).</td></tr>
+<tr><td>Reálný kontext</td><td>Sezóna a nápisy se řeší novým generováním.</td><td>Podzim ↔ léto, cedule „Na prodej“ / „Prodáno“, zimní verze do vánoční kampaně.</td></tr>
+</table></div>
+<p><b>První testy po vydání</b> (každý ~1 klip, cena přes <code>get_cost</code> a Frantovo „jo“): ① oprava jednoho prvku v <a href="#t11">#11</a> (gauč z cesty), ② RAW výstup z <a href="#t1">#01</a> + Frantův grade S2, ③ cena za sekundu proti FLUX 3 (1 kr/s).</p>
+
+<h2 id="modely">Co je k dispozici dnes</h2>
+<p>Modely v Higgsfield MCP, které upravují <i>hotové</i> video. Ceny skutečně odečtené z účtu za klip 6,4 s v 720p (u Klingu se platí výstupní délka 6 s).</p>
+<div class="tw"><table>
+<tr><th>Model</th><th>ID</th><th>Co umí</th><th>Vstup</th><th class="r">Cena 720p</th><th class="r">kr/s</th></tr>
+<tr><td><b>Kling 4.0</b></td><td><code>kling4_0</code></td><td>text→video, start/end + až 10 snímků, reference, <b>video-edit</b> (základní video + až 4 další videa a 10 obrázků), Kling elementy (7)</td><td>3–30 s, 720p/1080p, 21:9–9:16</td><td class="r">16,5</td><td class="r">2,75</td></tr>
+<tr><td>Kling 4.0 Flash</td><td><code>kling_4_0_flash</code></td><td>totéž rychleji, jen 720p, bez end snímku</td><td>3–20 s</td><td class="r">24</td><td class="r">4,0</td></tr>
+<tr><td><b>Genjutsu</b></td><td><code>hf_mult_replace_object</code></td><td>výměna prostoru / objektu / oblečení ve videu podle 1–30 obrázků, člověk zůstane</td><td>4–30 s, 480p–1080p</td><td class="r">49 (1080p 140)</td><td class="r">7,6</td></tr>
+<tr><td>Genjutsu Lite</td><td><code>hf_mult_replace_object_flash</code></td><td>totéž na Klingu 4.0, 1–10 obrázků</td><td>4–30 s</td><td class="r">14</td><td class="r">2,2</td></tr>
+<tr><td>Seedance 2.5</td><td><code>seedance_2_5</code></td><td>text→video, omni reference (30 obr., 10 videí, 10 audií), <b>video_edit</b>, prodloužení dopředu/dozadu, 480p návrh → finál, zvuk</td><td>4–30 s, 480p–4K</td><td class="r">49</td><td class="r">7,6</td></tr>
+<tr><td>Seedance 2.5 Flash</td><td><code>seedance_2_5_flash</code></td><td>totéž do 720p</td><td>4–30 s</td><td class="r">39</td><td class="r">6,1</td></tr>
+<tr><td><b>Gemini Omni Flash 1.2</b></td><td><code>gemini_omni_flash_1_2</code></td><td>text→video, první/poslední snímek, reference (7 obr., 3 videa), <b>edit</b> s referencemi, prodloužení o 3–10 s, zvuk</td><td>edit 3–15 s, 360p–4K, jen 16:9/9:16</td><td class="r">15,75</td><td class="r">2,45</td></tr>
+<tr><td><b>FLUX 3 Video Edit</b></td><td><code>flux_3_video_edit</code></td><td>úprava videa jen textem (bez referencí)</td><td>prvních 15 s, výstup ~1248×704</td><td class="r">6,44</td><td class="r">1,0</td></tr>
+<tr><td>Kling 3.0 Omni Edit</td><td><code>kling_video_edit</code></td><td>úprava textem + až 4 obrázky (dřívější standard)</td><td>std / pro / 4K</td><td class="r">9 (std)</td><td class="r">1,4</td></tr>
+</table></div>
+<div class="note"><b>Pozor na odhady cen</b>Nástroj <code>get_cost</code> u FLUX 3 hlásil 15 kr, skutečně odečetl 6,44 (1 kr/s). Kling 4.0 bez zadané délky počítá 10 s (27,5 kr) – vždy zadávat <code>duration</code>. Kling 4.0 Flash je ve video-editu dražší než plný Kling 4.0.</div>
+
+<h2 id="testy">Testy na Vanguardu</h2>
+<h3>Zadání</h3>
+<div class="two">
+<figure class="fig"><video controls muted loop playsinline preload="metadata" poster="v/00_zdroj_16x9.jpg"><source src="v/00_zdroj_16x9.mp4" type="video/mp4"></video><figcaption>Zdroj: záběr z S2, Honza prochází holý loft, 6,44 s, 1080p25.</figcaption></figure>
+<figure class="fig"><img src="v/ref_N1.jpg" alt="Reference N1" loading="lazy"><figcaption>Reference N1: naše vizualizace z ChatGPT podle Blender nástřelu Honzovy trasy (13. 11.) – nábytek mimo jeho cestu.</figcaption></figure>
+</div>
+<ul>
+<li><b>Na výšku</b> není pevný výřez: Honza ujde 840 px, pevné okno 608 px by ho ztratilo. Výřez ho plynule sleduje po dráze spočítané z jeho masek (hladký švenk) → 720×1280.</li>
+<li>Všechny modely dostaly <b>stejný prompt</b>: Honza beze změny (tvář, oblek, chůze, rty), stejná kamera, okna, sloupy, výhled; změnit jen prázdný loft podle reference; volná cesta tam, kde jde.</li>
+<li>Proměna „za ním“ (#07, #08, #11): prompt navíc říká, že prostor se mění až za jeho zády a před ním zůstává beton.</li>
+</ul>
+<h3>Jak měřím</h3>
+<ul>
+<li><b>Podoba</b> – rozpoznávání tváří (SFace), kosinus vůči originálnímu Honzovi ve stejném okamžiku, medián z 10 snímků. 1 = totožný; u malé tváře v 720p je strop kolem 0,8. Pro představu: Kling 3.0 Omni, který 13. 11. udělal „starého pána“, má 0,38.</li>
+<li><b>Dráha</b> – o kolik se poloha Honzovy tváře liší od originálu (medián, % šířky obrazu). Do ~0,5 % jde výsledek skládat s originálem (vrátit skutečného Honzu, navázat střih).</li>
+<li><b>Cena</b> – skutečně odečtené kredity z historie účtu, ne odhad.</li>
+</ul>
+
+<h3 id="srovnani">Srovnání vedle sebe</h3>
+<figure class="fig"><video controls muted loop playsinline preload="metadata" poster="v/M1_srovnani_16x9.jpg"><source src="v/M1_srovnani_16x9.mp4" type="video/mp4"></video><figcaption>Na šířku: zdroj a sedm modelů se stejnou referencí N1 (+ dvě verze z 13. 11.).</figcaption></figure>
+<figure class="fig"><video controls muted loop playsinline preload="metadata" poster="v/M2_srovnani_9x16.jpg"><source src="v/M2_srovnani_9x16.mp4" type="video/mp4"></video><figcaption>Na výšku: zdroj, Kling 4.0 s proměnou, Gemini Omni, Genjutsu.</figcaption></figure>
+
+<h3 id="tabulka">Výsledky v číslech</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>Test</th><th>Formát</th><th class="r">kr</th><th class="r">kr/s</th><th class="r">Podoba</th><th class="r">Dráha %</th><th>Verdikt</th></tr>
+<tr><td><a href='#t1'>#01</a></td><td>Kling 4.0 – hotový interiér</td><td>16:9</td><td class='r'>16,5</td><td class='r'>2,73</td><td class='r'>0,45</td><td class='r'>0,33</td><td><span class='lab b'>Použitelné</span></td></tr><tr><td><a href='#t2'>#02</a></td><td>Kling 4.0 Flash</td><td>16:9</td><td class='r'>24</td><td class='r'>3,97</td><td class='r'>0,41</td><td class='r'>1,99</td><td><span class='lab r'>Nepoužívat</span></td></tr><tr><td><a href='#t3'>#03</a></td><td>Seedance 2.5 Flash</td><td>16:9</td><td class='r'>39</td><td class='r'>6,11</td><td class='r'>0,51</td><td class='r'>0,51</td><td><span class='lab y'>S výhradou</span></td></tr><tr><td><a href='#t4'>#04</a></td><td>Gemini Omni Flash 1.2</td><td>16:9</td><td class='r'>15,75</td><td class='r'>2,42</td><td class='r'>0,45</td><td class='r'>1,79</td><td><span class='lab b'>Použitelné</span></td></tr><tr><td><a href='#t5'>#05</a></td><td>FLUX 3 Video Edit – jen text</td><td>16:9</td><td class='r'>6,44</td><td class='r'>1,01</td><td class='r'>0,39</td><td class='r'>0,28</td><td><span class='lab y'>S výhradou</span></td></tr><tr><td><a href='#t6'>#06</a></td><td>Genjutsu Lite</td><td>16:9</td><td class='r'>14</td><td class='r'>2,17</td><td class='r'>0,21</td><td class='r'>0,83</td><td><span class='lab r'>Nepoužívat</span></td></tr><tr><td><a href='#t7'>#07</a></td><td>Kling 4.0 – proměna za Honzou</td><td>16:9</td><td class='r'>16,5</td><td class='r'>2,73</td><td class='r'>0,57</td><td class='r'>0,34</td><td><span class='lab g'>Doporučeno</span></td></tr><tr><td><a href='#t8'>#08</a></td><td>Kling 4.0 – proměna na výšku</td><td>9:16</td><td class='r'>16,5</td><td class='r'>2,73</td><td class='r'>0,59</td><td class='r'>1,36</td><td><span class='lab g'>Doporučeno</span></td></tr><tr><td><a href='#t9'>#09</a></td><td>Gemini Omni Flash 1.2 – na výšku</td><td>9:16</td><td class='r'>15,75</td><td class='r'>2,42</td><td class='r'>0,54</td><td class='r'>0,71</td><td><span class='lab b'>Použitelné</span></td></tr><tr><td><a href='#t10'>#10</a></td><td>Genjutsu (plné) – na výšku</td><td>9:16</td><td class='r'>49</td><td class='r'>7,68</td><td class='r'>0,8</td><td class='r'>0,20</td><td><span class='lab g'>Doporučeno</span></td></tr><tr><td><a href='#t11'>#11</a></td><td>Kling 4.0 – proměna, styl Monaco</td><td>16:9</td><td class='r'>16,5</td><td class='r'>2,73</td><td class='r'>0,57</td><td class='r'>0,35</td><td><span class='lab y'>S výhradou</span></td></tr><tr><td><a href='#t12'>#12</a></td><td>FLUX 3 – úprava hotového AI klipu: večer</td><td>16:9</td><td class='r'>6,05</td><td class='r'>1</td><td class='r'>0,32</td><td class='r'>–</td><td><span class='lab g'>Doporučeno</span></td></tr><tr><td><a href='#t13'>#13</a></td><td>FLUX 3 – „RAW“ vzhled AI klipu</td><td>16:9</td><td class='r'>6,05</td><td class='r'>1</td><td class='r'>0,4</td><td class='r'>–</td><td><span class='lab y'>S výhradou</span></td></tr><tr><td><a href='#t91'>#91</a></td><td>Kling 3.0 Omni Edit (z 13. 11.)</td><td>16:9</td><td class='r'>12</td><td class='r'>1,88</td><td class='r'>0,38</td><td class='r'>0,34</td><td><span class='lab n'>Srovnání</span></td></tr><tr><td><a href='#t92'>#92</a></td><td>Genjutsu 1080p (z 13. 11., použito v S2)</td><td>16:9</td><td class='r'>140</td><td class='r'>21,94</td><td class='r'>0,65</td><td class='r'>0,45</td><td><span class='lab n'>Srovnání</span></td></tr>
+</table></div>
+<p class="mono">#12 a #13 upravují hotový klip #01; jejich podoba je vůči originálu (vůči vstupnímu klipu #01: 0,48 a 0,55).</p>
+
+<h3 id="vitezove">Doporučené</h3>
+<div class="grid"><article class="card land" id="t7">
+  <video controls muted loop playsinline preload="none" poster="v/07_kling4_promena.jpg"><source src="v/07_kling4_promena.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#07</span> <b>Kling 4.0 – proměna za Honzou</b> <span class="lab g">Doporučeno</span></div>
+  <div class="mono">kling4_0 · video-edit</div>
+  <div class="stats"><span><b>16,5 kr</b> cena</span><span><b>0,57</b> podoba</span><span><b>0,34 %</b> dráha</span><span><b>1280×720</b> · 6,04 s</span></div>
+  <p>Prostor se mění, jak Honza jde: na začátku holý beton, za zády mu přeběhne teplé světlo a za ním už je hotový art-deco penthouse. Jedna generace, žádné skládání. Honza drží dráhu i časování (0,34 %), podoba 0,57.</p></div></article>
+<article class="card port" id="t8">
+  <video controls muted loop playsinline preload="none" poster="v/08_kling4_promena_9x16.jpg"><source src="v/08_kling4_promena_9x16.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#08</span> <b>Kling 4.0 – proměna na výšku</b> <span class="lab g">Doporučeno</span></div>
+  <div class="mono">kling4_0 · video-edit · 9:16</div>
+  <div class="stats"><span><b>16,5 kr</b> cena</span><span><b>0,59</b> podoba</span><span><b>1,36 %</b> dráha</span><span><b>720×1280</b> · 6,04 s</span></div>
+  <p>Stejné zadání na výřez 9:16, který Honzu sleduje. Proměna funguje, podoba 0,59 (nejvíc z Klingů). Na výšku Honzu posune o 1,4 % šířky – na reel nevadí, na skládání s originálem ano.</p></div></article>
+<article class="card port" id="t10">
+  <video controls muted loop playsinline preload="none" poster="v/10_genjutsu_9x16.jpg"><source src="v/10_genjutsu_9x16.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#10</span> <b>Genjutsu (plné) – na výšku</b> <span class="lab g">Doporučeno</span></div>
+  <div class="mono">hf_mult_replace_object · 720p</div>
+  <div class="stats"><span><b>49 kr</b> cena</span><span><b>0,8</b> podoba</span><span><b>0,20 %</b> dráha</span><span><b>720×1280</b> · 6,38 s</span></div>
+  <p>Nejvěrnější Honza ze všech testů: podoba 0,80, dráha 0,20 %. Interiér bohatý a přesně podle N1. Neumí proměnu v čase (celý klip je hned hotový) a je 3× dražší než Kling 4.0.</p></div></article>
+<article class="card land" id="t12">
+  <video controls muted loop playsinline preload="none" poster="v/12_flux3_vecer.jpg"><source src="v/12_flux3_vecer.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#12</span> <b>FLUX 3 – úprava hotového AI klipu: večer</b> <span class="lab g">Doporučeno</span></div>
+  <div class="mono">flux_3_video_edit · vstup = test 01</div>
+  <div class="stats"><span><b>6,05 kr</b> cena</span><span><b>0,32</b> podoba</span><span><b>– %</b> dráha</span><span><b>1248×704</b> · 6,04 s</span></div>
+  <p>To, co slibuje Miracle u světla, dnes: z klipu 01 udělal modrou hodinu, rozsvítil lustry a lampy, nábytek, kamera i Honza zůstali. Za 6 kr. Tvář se ale lehce přepočítá (0,48 vůči vstupu).</p></div></article></div>
+<h3 id="ostatni">Použitelné a s výhradou</h3>
+<div class="grid"><article class="card land" id="t1">
+  <video controls muted loop playsinline preload="none" poster="v/01_kling4.jpg"><source src="v/01_kling4.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#01</span> <b>Kling 4.0 – hotový interiér</b> <span class="lab b">Použitelné</span></div>
+  <div class="mono">kling4_0 · video-edit</div>
+  <div class="stats"><span><b>16,5 kr</b> cena</span><span><b>0,45</b> podoba</span><span><b>0,33 %</b> dráha</span><span><b>1280×720</b> · 6,04 s</span></div>
+  <p>Celý klip rovnou zařízený podle N1, kamera i sloupy sedí, detail bohatý. Podoba 0,45 – Honza je poznat, ale tvář mírně „zkrášlená“. Ořízne klip na celé sekundy (6,44 → 6,04 s).</p></div></article>
+<article class="card land" id="t4">
+  <video controls muted loop playsinline preload="none" poster="v/04_geminiomni.jpg"><source src="v/04_geminiomni.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#04</span> <b>Gemini Omni Flash 1.2</b> <span class="lab b">Použitelné</span></div>
+  <div class="mono">gemini_omni_flash_1_2 · edit</div>
+  <div class="stats"><span><b>15,75 kr</b> cena</span><span><b>0,45</b> podoba</span><span><b>1,79 %</b> dráha</span><span><b>1280×720</b> · 6,5 s</span></div>
+  <p>Nejstabilnější tvář v rámci klipu (minimum 0,34), světlo věrné původnímu dni. Honzu ale posouvá o 1,8 % šířky a klip natáhne na 6,5 s – pod výsledek nejde podložit originál.</p></div></article>
+<article class="card port" id="t9">
+  <video controls muted loop playsinline preload="none" poster="v/09_geminiomni_9x16.jpg"><source src="v/09_geminiomni_9x16.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#09</span> <b>Gemini Omni Flash 1.2 – na výšku</b> <span class="lab b">Použitelné</span></div>
+  <div class="mono">gemini_omni_flash_1_2 · edit · 9:16</div>
+  <div class="stats"><span><b>15,75 kr</b> cena</span><span><b>0,54</b> podoba</span><span><b>0,71 %</b> dráha</span><span><b>720×1280</b> · 6,5 s</span></div>
+  <p>Na výšku lepší než na šířku: podoba 0,54, dráha 0,71 %. Levná rychlá zkouška stylu.</p></div></article>
+<article class="card land" id="t3">
+  <video controls muted loop playsinline preload="none" poster="v/03_seedance25flash.jpg"><source src="v/03_seedance25flash.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#03</span> <b>Seedance 2.5 Flash</b> <span class="lab y">S výhradou</span></div>
+  <div class="mono">seedance_2_5_flash · video_edit</div>
+  <div class="stats"><span><b>39 kr</b> cena</span><span><b>0,51</b> podoba</span><span><b>0,51 %</b> dráha</span><span><b>1280×720</b> · 6,38 s</span></div>
+  <p>Hezký výsledek, podoba 0,51, dráha 0,51 %, ale v polovině klipu přepálený odlesk přes Honzu a cena 39 kr (účtuje se podle délky zdroje). Žádná výhoda proti Klingu 4.0.</p></div></article>
+<article class="card land" id="t11">
+  <video controls muted loop playsinline preload="none" poster="v/11_kling4_promena_monaco.jpg"><source src="v/11_kling4_promena_monaco.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#11</span> <b>Kling 4.0 – proměna, styl Monaco</b> <span class="lab y">S výhradou</span></div>
+  <div class="mono">kling4_0 · video-edit</div>
+  <div class="stats"><span><b>16,5 kr</b> cena</span><span><b>0,57</b> podoba</span><span><b>0,35 %</b> dráha</span><span><b>1280×720</b> · 6,04 s</span></div>
+  <p>Druhý styl (bílý mramor, bouclé gauč). Proměna proběhne celá kolem 2. s, ne postupně za Honzou, a Kling postavil gauč do cesty – Honza chvíli jde ZA ním. Reference V2 neměla volnou cestu (N1 z Blender nástřelu ji měla).</p></div></article>
+<article class="card land" id="t5">
+  <video controls muted loop playsinline preload="none" poster="v/05_flux3.jpg"><source src="v/05_flux3.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#05</span> <b>FLUX 3 Video Edit – jen text</b> <span class="lab y">S výhradou</span></div>
+  <div class="mono">flux_3_video_edit</div>
+  <div class="stats"><span><b>6,44 kr</b> cena</span><span><b>0,39</b> podoba</span><span><b>0,28 %</b> dráha</span><span><b>1248×704</b> · 6,38 s</span></div>
+  <p>Bez referenčního obrázku. Velmi věrný původnímu záběru (stíny od oken, sloupy, dráha 0,28 %), ale luxusu málo: parketa, zlatý strop, lustry, žádný nábytek. Výstup 1248×704.</p></div></article>
+<article class="card land" id="t13">
+  <video controls muted loop playsinline preload="none" poster="v/13_flux3_raw.jpg"><source src="v/13_flux3_raw.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#13</span> <b>FLUX 3 – „RAW“ vzhled AI klipu</b> <span class="lab y">S výhradou</span></div>
+  <div class="mono">flux_3_video_edit · vstup = test 01</div>
+  <div class="stats"><span><b>6,05 kr</b> cena</span><span><b>0,4</b> podoba</span><span><b>– %</b> dráha</span><span><b>1248×704</b> · 6,04 s</span></div>
+  <p>Zkouška „Give me a raw look“ z Miraclu: barvy zneutralizoval (sytost −20 %, pryč teplý nádech), obsah nechal. Kontrast ale skoro stejný (−5 %) – skutečný plochý log to není.</p></div></article></div>
+<h3 id="nepouzivat">Nepoužívat a srovnání z 13. 11.</h3>
+<div class="grid"><article class="card land" id="t2">
+  <video controls muted loop playsinline preload="none" poster="v/02_kling4flash.jpg"><source src="v/02_kling4flash.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#02</span> <b>Kling 4.0 Flash</b> <span class="lab r">Nepoužívat</span></div>
+  <div class="mono">kling_4_0_flash · video-edit</div>
+  <div class="stats"><span><b>24 kr</b> cena</span><span><b>0,41</b> podoba</span><span><b>1,99 %</b> dráha</span><span><b>1280×720</b> · 6,04 s</span></div>
+  <p>Paradox: dražší než plný Kling 4.0 (24 vs 16,5 kr) a horší – posouvá Honzu o 2 % šířky, podoba 0,41.</p></div></article>
+<article class="card land" id="t6">
+  <video controls muted loop playsinline preload="none" poster="v/06_genjutsulite.jpg"><source src="v/06_genjutsulite.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#06</span> <b>Genjutsu Lite</b> <span class="lab r">Nepoužívat</span></div>
+  <div class="mono">hf_mult_replace_object_flash · 720p</div>
+  <div class="stats"><span><b>14 kr</b> cena</span><span><b>0,21</b> podoba</span><span><b>0,83 %</b> dráha</span><span><b>1280×720</b> · 6,46 s</span></div>
+  <p>Interiér nejbohatší a přesně podle N1, ale Honza je jiný člověk (podoba 0,21) a kamera stojí – zmizel švenk. Na lidi nepoužívat.</p></div></article>
+<article class="card land" id="t92">
+  <video controls muted loop playsinline preload="none" poster="v/92_genjutsu_1080p.jpg"><source src="v/92_genjutsu_1080p.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#92</span> <b>Genjutsu 1080p (z 13. 11., použito v S2)</b> <span class="lab n">Srovnání</span></div>
+  <div class="mono">hf_mult_replace_object · 1080p</div>
+  <div class="stats"><span><b>140 kr</b> cena</span><span><b>0,65</b> podoba</span><span><b>0,45 %</b> dráha</span><span><b>1920×1080</b> · 6,38 s</span></div>
+  <p>Srovnávací základ z finálu S2: podoba 0,65, dráha 0,45 %. Nejlepší na šířku, ale 140 kr.</p></div></article>
+<article class="card land" id="t91">
+  <video controls muted loop playsinline preload="none" poster="v/91_omni_kling3.jpg"><source src="v/91_omni_kling3.mp4" type="video/mp4"></video>
+  <div class="cb"><div class="ch"><span class="num">#91</span> <b>Kling 3.0 Omni Edit (z 13. 11.)</b> <span class="lab n">Srovnání</span></div>
+  <div class="mono">kling_video_edit · pro</div>
+  <div class="stats"><span><b>12 kr</b> cena</span><span><b>0,38</b> podoba</span><span><b>0,34 %</b> dráha</span><span><b>1920×1080</b> · 6,38 s</span></div>
+  <p>To, co jsme používali dřív: z Honzy udělal „starého pána“ (Franta 13. 11.), referenci styl nedodržel. Podoba 0,38.</p></div></article></div>
+
+<h3 id="pouceni">Co se pokazilo a co z toho plyne</h3>
+<div class="note bad"><b>Vrátit skutečného Honzu do výsledku Klingu 4.0 nejde jednoduše</b>Kling drží dráhu v průměru (0,34 %), ale mezi 3. a 6. s AI Honza místy uteče o 20–50 px a o pár snímků. Prosté podložení originálem dá dvojitou postavu (obrázek níž), barevné sladění ho vybělí. Na finál, kde musí být Honza stoprocentně on, zůstává postup z S2: Genjutsu + proměna z originálu (skutečný Honza do příchodu vlny).</div>
+<figure class="fig"><img src="v/neuspech_dvojity_honza.jpg" alt="Dvojitý Honza po podložení originálem" loading="lazy"><figcaption>Nepovedený pokus o podložení originálem: dvojitá hlava a vybělený oblek.</figcaption></figure>
+<ul>
+<li><b>Nábytek v cestě</b> (#11): věta „volná cesta“ v promptu nestačí. Funguje reference, kde je cesta opravdu volná – N1 z Blender nástřelu (#07) ji měla a Honza šel volně, V2 bez nástřelu ne.</li>
+<li><b>Kling 4.0 ořízne na celé sekundy</b> (6,44 → 6,04 s, konec chybí). Posílat zdroj o sekundu delší, než je potřeba ve střihu.</li>
+<li><b>Gemini prodlouží</b> na 6,5 s a Honzu posune – na reel nevadí, na navázání střihu ano.</li>
+<li><b>FLUX 3 vrací 1248×704</b>, ne 1280×720 – ve střihu zvětšit o 2,6 %.</li>
+<li><b>Genjutsu Lite zamrazí kameru</b> – švenk ze zdroje zmizel. Dražší plné Genjutsu ho drží.</li>
+<li><b>Každá „lokální“ úprava dnes přepočítá celý obraz</b> – i FLUX 3 u změny světla lehce změní tvář (0,48 vůči vstupu). Přesně tohle má Miracle vyřešit vrstvami.</li>
+</ul>
+
+<h2 id="workflow">Naše workflow na příkladech</h2>
+<h3 id="wf-vanguard">A · Vanguard – makléř prochází a prostor se za ním mění (film 16:9 i reel 9:16)</h3>
+<ol class="steps">
+<li><b>Záběr</b> z Frantovy nabarvené timeline: 4–15 s, člověk celý v obraze, klidná kamera, jasná cesta. O sekundu delší, než je potřeba (Kling ořízne).</li>
+<li><b>Výřez 9:16 z originálu</b>, který člověka plynule sleduje (dráha z masek) – ne pevné okno.</li>
+<li><b>Reference prostoru v ChatGPT</b> podle Blender nástřelu trasy: nábytek mimo cestu, kamera z výšky postavy. Zdarma (předplatné).</li>
+<li><b>Cena</b> přes <code>get_cost</code> s <code>duration</code> → Franta „jo“.</li>
+<li><b>Test 720p Kling 4.0 video-edit „proměna za ním“</b> – 16,5 kr za 6 s. Dva styly = 33 kr; na reel klidně oba (A/B, „který loft?“).</li>
+<li><b>Automatická kontrola</b> (<code>hodnot.py</code>, <code>drah.py</code>): podoba ≥ 0,5, dráha ≤ 0,5 %, kontaktní arch – nábytek v cestě, okna a sloupy na místě.</li>
+<li><b>Finál 1080p</b> jen vybraného stylu (~4 kr/s, 6 s ≈ 24–26 kr). Když je makléř blízko a mluví do kamery → Genjutsu 1080p (140 kr) nebo proměna z originálu jako v S2.</li>
+<li><b>Volitelně FLUX 3</b>: večerní verze téhož klipu za ~6 kr (lustry svítí, venku modrá hodina).</li>
+<li><b>Do Resolve</b> na V2 nad Frantův klip, štítek „Vizualizace (AI)“, barví Franta.</li>
+</ol>
+<p><b>Cena celého příkladu:</b> 2 styly v 720p 33 kr + finál 1080p ~26 kr + večer 6 kr ≈ <b>65 kr</b>. Stejná scéna přes Genjutsu 1080p na šířku i na výšku: 280 kr.</p>
+
+<h3 id="wf-valtice">B · Valtice – průchod domem z půdorysu (dům ještě nestojí)</h3>
+<ol class="steps">
+<li><b>3D prohlídka z půdorysu</b> (skill <code>prohlidka-3d</code>) a trasa kamery ve výšce očí (skill <code>pruchod-z-prohlidky</code>).</li>
+<li><b>Render trasy z 3D</b> – hrubý průchod se správnou dispozicí. Zdarma.</li>
+<li><b>Snímky z trasy → vizualizace v ChatGPT</b>: stejné materiály a světlo, stavba se nemění (okna, dveře, počty). Zdarma.</li>
+<li><b>Kling 4.0 video-edit</b>: render trasy + vizualizace jako reference → fotorealistický průchod. Nově <b>nejdřív 720p</b> (2,75 kr/s), 1080p jen pro vybrané úseky.</li>
+<li><b>FLUX 3</b>: denní a večerní verze stejného průchodu za 1 kr/s, místo druhé generace v Klingu.</li>
+<li><b>Kontrola stavby</b> proti prohlídce; ve videu nikdy originál z 3D prohlídky; štítek „Vizualizace (AI)“ po celou dobu.</li>
+<li><b>Až bude Miracle</b>: oprava jednoho prvku (okno, dveře, schody) bez přegenerování celého průchodu.</li>
+</ol>
+
+<h3 id="wf-viz">C · Vizualizace – z fotky prázdného bytu do videa</h3>
+<ol class="steps">
+<li><b>Staging v ChatGPT</b> v sadě stylu zakázky se zámkem stavby (skill <code>vizualizace</code>).</li>
+<li><b>Video</b>: Kling 4.0 start + end snímek (prázdný → zařízený), nebo když existuje natočený průchod, Kling 4.0 video-edit „proměna za kamerou“.</li>
+<li><b>FLUX 3</b>: den → soumrak stejného klipu (~6 kr) na hook.</li>
+<li><b>Kontrola před klientem</b> (skill <code>kontrola-pred-klientem</code>): dlaždice v plném rozlišení proti originálu.</li>
+<li><b>Až bude Miracle</b>: RAW → Frantův grade, aby vizualizace seděla k fotkám z focení.</li>
+</ol>
+
+<h3 id="wf-reel">D · Reely – hooky z jednoho záběru</h3>
+<div class="tw"><table>
+<tr><th>Hook</th><th>Nástroj</th><th class="r">Test 720p</th><th>Poznámka</th></tr>
+<tr><td>Prostor se promění za makléřem</td><td>Kling 4.0 video-edit, 9:16</td><td class="r">16,5 kr</td><td>#08; dva styly → otázka do komentářů</td></tr>
+<tr><td>Den → noc ve stejném záběru</td><td>FLUX 3</td><td class="r">~6 kr</td><td>#12; technika <code>den-na-noc-ve-stejnem-zaberu</code> (Učebna, skóre 2,3) tím dostane levnou AI cestu</td></tr>
+<tr><td>Makléř mluví, za ním jiný svět</td><td>Genjutsu</td><td class="r">49 kr</td><td>#10; jediné, co drží tvář 0,8; 1080p 140 kr</td></tr>
+<tr><td>Zimní / vánoční verze exteriéru</td><td>FLUX 3 nebo Kling 4.0 edit</td><td class="r">6–17 kr</td><td>vždy štítek Vizualizace</td></tr>
+<tr><td>Rychlá zkouška tří stylů</td><td>Gemini Omni Flash 1.2</td><td class="r">15,75 kr</td><td>levné, ale posouvá člověka – jen náhled stylu</td></tr>
+</table></div>
+
+<h2 id="kdy-co">Kdy který model</h2>
+<div class="tw"><table>
+<tr><th>Situace</th><th>Použij</th><th>Proč</th></tr>
+<tr><td>Prostor se má proměnit v čase (za člověkem, průchod)</td><td><b>Kling 4.0 video-edit</b></td><td>Jediný udělá proměnu sám, drží dráhu, nejlevnější rozumný (2,75 kr/s).</td></tr>
+<tr><td>Tvář je hlavní (mluví do kamery, detail)</td><td><b>Genjutsu</b> (plné)</td><td>Podoba 0,65–0,80, ostatní pod 0,6.</td></tr>
+<tr><td>Hotový klip: světlo, denní doba, barvy</td><td><b>FLUX 3 Video Edit</b></td><td>1 kr/s, drží obsah i dráhu (0,28 %).</td></tr>
+<tr><td>Náhled stylu, ještě nevíme, jaký</td><td>Gemini Omni Flash 1.2</td><td>15,75 kr, stabilní tvář, ale posouvá člověka.</td></tr>
+<tr><td>Prodloužit klip</td><td>Seedance 2.5 nebo Gemini Omni (extend)</td><td>Netestováno dnes; Seedance umí i dozadu.</td></tr>
+<tr><td>Oprava jednoho prvku, RAW, velikost prvku</td><td><b>Miracle</b>, až bude</td><td>Dnes jen přegenerováním nebo naším skládáním.</td></tr>
+<tr><td>Nikdy</td><td>Kling 4.0 Flash, Genjutsu Lite (lidi), Kling 3.0 Omni Edit (lidi)</td><td>Dražší/horší, mění člověka.</td></tr>
+</table></div>
+
+<h2 id="ucebna">Jak funguje Učebna</h2>
+<p>Učebna je samoučící knihovna technik z tutoriálů. Franta pošle odkaz (hlavně Instagram reels, i YouTube a TikTok) a Učebna video stáhne a vyrobí podklady: střihy, klíčové snímky, přepis řeči a text ze snímků. Claude ho rozebere na kroky a techniky vlastními slovy, stejné techniky z různých tutoriálů sloučí a propojí je vazbami. Z technik pak skládá nová workflow. Všechno je vidět v dashboardu <code>/ucebna</code> a enginy E1–E6 a V1–V5 si odsud berou techniky do zakázek (<code>fd_ucebna.py doporuc</code>).</p>
+<div class="kpi">
+<div><b>241</b><span>rozebraných zdrojů</span></div>
+<div><b>474</b><span>technik (354 nových, 119 ověřených)</span></div>
+<div><b>118</b><span>aktivních workflow</span></div>
+<div><b>2 599</b><span>vazeb mezi technikami</span></div>
+<div><b>+27 / +33</b><span>zdrojů / technik za 7 dní</span></div>
+</div>
+
+<h3 id="ucebna-schvalovani">Musí se něco schvalovat? A používá se to do té doby?</h3>
+<div class="tw"><table>
+<tr><th>Co</th><th>Kdo schvaluje</th><th>Používá se před schválením?</th></tr>
+<tr><td><b>Techniky</b></td><td>Nikdo – neschvalují se.</td><td><b>Ano, hned.</b> Rozbor je uloží a enginy je smějí čerpat (<code>export</code>, <code>doporuc</code>). Řadí se podle skóre: <code>ln(1+zdrojů) + 0,6·ln(1+použití) + 0,8·(hodnocení − 3)</code>. Nová technika z jednoho tutoriálu má 0,69, takže je dole, ale <code>doporuc</code> dává nevybraným bonus „průzkum +0,5“, aby občas dostaly šanci. Po prvním použití se z „nové“ stane „ověřená“.</td></tr>
+<tr><td><b>Nová workflow</b></td><td>Claude sám podle 4 pravidel (od 30. 10., Franta: „ano, schvaluj sám a přehled posílej“), <b>Franta má veto</b>.</td><td><b>Ne.</b> Návrh ve stavu „návrh“ enginy nepoužívají – do knihovny 118 workflow se dostane až schválením.</td></tr>
+<tr><td><b>Profily stylu</b> („stříhej jako…“)</td><td><b>Jen Franta.</b></td><td>Ne.</td></tr>
+</table></div>
+<p><b>Pravidla pro schválení workflow Claudem:</b> ① techniky aspoň ze dvou různých tutoriálů, ② nic placeného povinně (Higgsfield, ElevenLabs jen jako volitelný krok „po get_cost a Frantově souhlasu“), ③ Frantův styl: bez prolínaček, jen jeho nabarvené klipy, AI obraz vždy se štítkem Vizualizace, ④ neopakuje nic, co Franta dřív zamítl. Co pravidla nesplní, se nezamítá – čeká na Frantu. Přehled nově schválených dostává Franta <b>v neděli v 19:00</b>.</p>
+<div class="note warn"><b>Proč jeden návrh čeká od 15. 11.</b>Noční běh Učebny má v zadání „návrhy nikdy neschvaluj“ (starší pravidlo), schvaluje se jen v běžné práci. Návrh <code>n-20261115-9c2a</code> „Kolo oprav vizualizací: pruh, poloha a kontrola stavby“ tak zůstal otevřený, i když pravidla splňuje (2 zdroje, ChatGPT je v předplatném, štítek Vizualizace).</div>
+<div class="note"><b>Hodnocení zatím chybí úplně</b>Franta neohodnotil ani jednu z 474 technik. Skóre tak stojí jen na počtu tutoriálů a použití. Každý bod hodnocení nad nebo pod 3 posune skóre o 0,8 – nejrychlejší způsob, jak Učebnu naučit Frantův vkus.</div>
+
+<h3 id="ucebna-noci">Co se naučila za posledních 7 nocí (výběr z 33 technik)</h3>
+<ul>
+<li><b>AI video:</b> lokální úprava hotového AI videa po vrstvách (Miracle), převod AI videa na „RAW“ a vlastní grade, fotka vzhledu každé místnosti + AI video po dráze z Blenderu, objekt se v AI obletu objeví až v pravou chvíli.</li>
+<li><b>Vizualizace:</b> přepínání předvoleb stylu na stejném pokoji, referenční obrázek nábytku do stagingu, oprava jediného prvku vložením pruhu, kontrola polohy prvků proti obrysu z originální fotky.</li>
+<li><b>Maskování a titulky:</b> izolace osoby přes Magic Mask s alfou, upečení masky do luma matte a jeho použití na Edit/Fusion/Color, titulek za mluvčím přes Planar Tracker, udržení mluvčího ve středu (head tracking), titulek v režimu Difference, nástup titulku ve Fusionu s motion blurem, automatické titulky z řeči.</li>
+<li><b>Barvy a zvuk:</b> barvení podle tříd obrazu (nebe, zeleň, budovy), slunce na hodinách jako světlo celého reelu, přebarvení části záběru na klíčové slovo, oprava useknutého slova po izolaci hlasu zvukem z kamery, zvuk spouště s bílým bleskem.</li>
+<li><b>Procesy:</b> údržba paměti agenta v klidové době, úsporný chat (nízký effort, vypnuté konektory, předávací shrnutí), rozbor vlastních hovorů s klienty.</li>
+</ul>
+
+<h3 id="ucebna-doporuceni">Co by stálo za to schválit a začít používat</h3>
+<ol>
+<li><b>Schválit <code>n-20261115-9c2a</code> „Kolo oprav vizualizací“</b> – míří přesně na Frantovy výtky z posledních kol (opravit jen vadný prvek, změřit polohu bazénu a schodů proti fotce, ověřit stavbu). Pravidla splňuje.</li>
+<li><b>Zapsat dnešní test jako techniku</b> „proměna prostoru za člověkem přes Kling 4.0 video-edit“ (720p 16,5 kr, kontrola podoby a dráhy) a propojit ji s workflow průchodů.</li>
+<li><b>Den → noc přes FLUX 3</b>: ověřená technika <code>den-na-noc-ve-stejnem-zaberu</code> (skóre 2,3) dostane AI cestu za ~6 kr místo nového generování.</li>
+<li><b>Ohodnotit 10 nejpoužívanějších technik</b> (5 minut v dashboardu): text za objektem v záběru (použito 7×, skóre 3,89), závěrečná karta s logem (4×), zvukový design whoosh/impact (3×), pop zvuky k titulkům (3×), hook věta po slovech (2×), přechod přes přepálené světlo (2×), titulek na podlaze s extruzí, špendlík adresy na střeše, sluneční paprsky a prach, zvukový master −14 LUFS.</li>
+<li><b>Nejsilnější techniky do běžné výroby</b> (<code>doporuc</code> je dává jako první): text za objektem (3,89), závěrečná karta (3,45), střih v pohybovém rozmazání průjezdu (3,12), hook věta se zvýrazněným slovem (3,06), krytí střihu předmětem v popředí (2,81).</li>
+<li><b>Úklid:</b> 224 párů kandidátů na sloučení (hlavně titulky, hooky, dronové nálety), 16 chyb stahování (většinou webové články bez videa a 2 instagramové reely) a 2 YouTube videa čekají na soubor od Franty (<code>yt-qjIqU1xXKhw</code>, <code>yt-CPs72f8H8XU</code> → uložit do <code>inbox/</code>).</li>
+<li><b>Miracle techniky nechat ve stavu „nová“</b> (jistota 0,3–0,35, „dokud není dostupné, neplatit naslepo“) a po vydání je přeměřit plánem <a href="#miracle-plan">výše</a>.</li>
+</ol>
+
+<h2 id="soubory">Soubory a opakování testu</h2>
+<ul>
+<li>Složka: <code>Chundela - Vanguard/_02PODKLADY/higgsfield_testy/</code> – <code>vstup/</code> (zdroj 16:9, výřez 9:16, reference), <code>vysledky/</code> (plné výstupy), <code>archy/</code> (kontaktní archy a čísla), <code>testy.json</code> (ID úloh, modely, ceny).</li>
+<li><code>hodnot.py</code> – stažení, podoba tváře (SFace), kontaktní arch · <code>drah.py</code> – drží výsledek dráhu a časování · <code>fd_dotazeni.py</code> – nepovedený pokus vrátit originál (poučení) · <code>web_videa.py</code> + <code>web/_build.py</code> – tahle stránka.</li>
+<li>Účet: Higgsfield honza@, zůstatek po testech 3 631 kr. Druhý účet (gmail) nepoužit.</li>
+</ul>
+<p class="foot">Interní stránka FD Studia, neindexovaná. Jen naše záběry a naše AI testy – žádné snímky z cizích tutoriálů. AI výstupy jsou vizualizace, ne skutečný stav.</p>
+</div></main>
+<nav class="toc"><b>Obsah</b>
+<a href="#verdikt">Verdikt</a><a href="#miracle">Higgsfield Miracle</a><a class="s" href="#miracle-plan">Kde ho použijeme</a><a href="#modely">Co je k dispozici dnes</a>
+<a href="#testy">Testy na Vanguardu</a><a class="s" href="#srovnani">Srovnání vedle sebe</a><a class="s" href="#tabulka">Výsledky v číslech</a><a class="s" href="#vitezove">Doporučené</a><a class="s" href="#pouceni">Co se pokazilo</a>
+<a href="#workflow">Workflow na příkladech</a><a class="s" href="#wf-vanguard">A · Vanguard</a><a class="s" href="#wf-valtice">B · Valtice</a><a class="s" href="#wf-viz">C · Vizualizace</a><a class="s" href="#wf-reel">D · Reely</a>
+<a href="#kdy-co">Kdy který model</a><a href="#ucebna">Jak funguje Učebna</a><a class="s" href="#ucebna-schvalovani">Schvalování</a><a class="s" href="#ucebna-noci">Co se naučila</a><a class="s" href="#ucebna-doporuceni">Co schválit</a><a href="#soubory">Soubory</a>
+</nav></div>
+</body></html>
